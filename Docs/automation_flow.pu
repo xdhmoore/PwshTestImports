@@ -1,8 +1,5 @@
 @startuml
 
-' TODO implement a generator (etc) that creates the tests for this repo
-' see automation.txt
-
 rectangle "Generator" as gen
 json "Declaration Structure" as dec {
    "declarations": [

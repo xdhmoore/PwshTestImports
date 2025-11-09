@@ -1,3 +1,4 @@
 ---
 
-   TODO: can i make a linting rule that requires imported modules to be removed?
+TODO: can i make a linting rule that requires imported modules to be removed?
+TODO: implement a generator (etc) that creates the tests for this repo. see automation.txt
