@@ -1,0 +1,171 @@
+Is there a useful way to reduce all these test cases to a search problem over
+all the possible cases. Or the creation of test cases via a concise declarative
+notation. Something like:
+
+
+Test -> A.psm1
+     -> B.psm1
+        -> C.ps1
+
+or
+A.psm1
+B.psm1
+-> C.ps1
+
+
+or
+A.m
+B.m -> C.s
+or
+
+A.s
+B.m -> A.s
+
+Could use # for where identity doesnt need to match anything. just be unique.
+
+A.s
+#.m -> A.s
+
+or
+
+A.s
+m -> A.s
+
+or
+
+A.s
+m, A.s
+
+s.a
+m -> s.a
+
+-----------------------------------------------------
+Current tests would boil down to:
+000
+m
+
+005
+s
+
+010
+m -> s
+
+015
+s.1
+m -> s.1
+
+
+020
+m.1
+s -> m.1
+
+
+These in object form would be something like this:
+
+edges:
+   -
+      - type: m   # only 1 item in the edge
+        id: 1     # specifies id cause it will need a connection
+   -
+      - type: s   # no id cause it doesnt matter
+      - type: m   # 2 items to the edge
+        id: 1
+
+OR:
+
+
+declarations:
+   - location: testfile
+     type: module
+     fileId: 1
+   - location: testfile
+     type: script
+     fileId: 2
+   - location: 2
+     type: module
+     fileId: 1
+
+OR
+
+declarations:
+   - location: 'testfile' | fileId
+     type: 'module' | 'script'
+     fileId: null | /\d+/
+
+OR
+
+# idk, something like this
+declarationList: declaration | [declaration] + declarationList
+
+declaration:
+   location
+   type
+   fileId
+
+location: testfile | fileId
+type: 'module' | 'script'
+fileId: null | /\d+/
+testfile: null | 'testfile'
+
+
+# So, what would iteration over this look like. The possibilities are enumerable, not innumerable.
+# The causes of infinity seem to be:
+
+# do we create a new declaration or not
+*declarationList: declaration | [declaration] + declarationList
+
+declaration:
+   location
+   type
+   fileId
+
+location: testfile | *fileId   # existing fileid or new one
+type: 'module' | 'script'
+fileId: null | /\d+/           # again existing or new one
+testfile: null | 'testfile'
+
+This is not a lot of infinity. And actually the fileId is limited to one of
+X existing fileIds or a new one. So the only infinite is the depth of
+declarations.
+
+
+
+OR
+will need an extra type 'module-with-export-module-member'. By default a psm1 will export
+all aliases and functions (but not variables). Once Export-ModuleMember is used in a module,
+only those aliases and functions are exported. Therefore we get plain modules without
+e-mm and then modules with e-mm which have an extra function and alias that have been exported.
+The regular ones that haven't been exported won't show up. So:
+
+type: 'module' | 'script' | 'emm-module'
+
+And
+
+will need to handle unique alias/function names vs name conflicts with existing ones.
+It looks like aliases cause conflicts while functions just silently redeclare
+Should this be a module-level fieldlike
+
+declaration:
+   location
+   type
+   fileId
+   uniques: true | false
+
+or maybe should be per variable. Each module has these variables:
+
+moduleA if module type
+aliasA
+functionA
+
+aliasAx if emm module
+functionAx if emm module
+
+Do these all need to be independently either a redec of an existing item Or
+a brand new name? That makes things much more complicated.
+
+
+OR
+maybe i could create a codified string that expresses each choice.
+like
+
+m????? idk

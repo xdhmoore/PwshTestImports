@@ -1,0 +1,30 @@
+@startuml
+
+' TODO implement a generator (etc) that creates the tests for this repo
+' see automation.txt
+
+rectangle "Generator" as gen
+json "Declaration Structure" as dec {
+   "declarations": [
+      {
+         "location": "testfile",
+         "type": "module",
+         "fileId": 1
+      }
+   ]
+}
+
+rectangle "Simplified Notation" as simple
+rectangle "PlantUML Diagram" as plantUML
+rectangle "PowerShell Tests" as tests
+rectangle "Test Results" as results
+
+start --d-> gen
+gen --d-> dec : generate test structures
+dec --d-> simple : generate simplified notation
+dec --d-> plantUML :  generate plant uml diagram
+dec --d-> tests : generate powershell tests
+tests --d-> results : run tests
+
+
+@enduml
