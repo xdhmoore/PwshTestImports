@@ -1,6 +1,6 @@
 # PwshTestImports
 
-This is a project for trying a bunch of different module interdependencies, to see if the single psm1, multi ps1 module structure really works and if Pester cleans up everythng as expected.
+This is a project for trying a bunch of different module interdependencies. I've been experimenting with pwsh module structures with a single psm1 file, supported by many ps1 files internally. This project is to test some of the cases around this structure, specifically if Pester cleans up everything as expected.
 
 ### Running Tests
 

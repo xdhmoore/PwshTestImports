@@ -33,8 +33,6 @@ $MyOptions = @{
    # }
 }
 
-# TODO add code coverage
-
 # Updated example based on https://github.com/pester/Pester/issues/797#issuecomment-314495326
 # Based on https://pester.dev/docs/usage/mocking
 Function Invoke-PesterJob() {
