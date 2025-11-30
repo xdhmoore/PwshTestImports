@@ -20,7 +20,7 @@ V.ps1, W.ps1 - these files create a function or alias without the added checks. 
 is that if you try to create an alias that already exists, it will throw an error. If you try to create a function that already exists, it will silently override the existing function.
 
 #### Tests
-Tests use numbers in front of the name to enforce order. Each main test complains a companion test with _Cleanup in the name whose job is to guarantee that modules, aliases, and functions from the associated main test were cleaned up.
+Tests use numbers in front of the name to enforce order. Executing after each main test is a companion cleanup test with _Cleanup in the name whose job is to guarantee that modules, aliases, and functions from the associated main test were cleaned up.
 
 The test names contain parentheses where items are grouped together according to how they are imported. So if you have an import arrangement like:
 
